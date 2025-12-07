@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Awareness & Support</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #fff1f8, #ffe6f1, #f8d3e0); overflow-x: hidden; }
+
+        /* Hero Section */
+        header {
+            height: 90vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), 
+                        url("https://images.unsplash.com/photo-1530023367847-a683933f4172?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        .hero-text { max-width: 700px; padding: 20px; text-shadow: 2px 2px 15px rgba(0,0,0,0.6); animation: fadeInUp 1.8s ease; }
+        .hero-text h1 { font-size: 3.8rem; font-weight: 700; background: linear-gradient(90deg, #ff5fa2, #f9c6d3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-text p { margin-top: 18px; font-size: 1.2rem; color: #ffe6f0; text-shadow: 1px 1px 8px rgba(0,0,0,0.6); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Section */
+        .section { max-width: 950px; margin: auto; padding: 60px 20px; animation: fadeIn 1.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .section h2 { text-align: center; font-size: 2.4rem; color: #be2e7a; margin-bottom: 20px; font-weight: 700; }
+        .section p { text-align: center; font-size: 1.1rem; line-height: 1.8; color: #444; }
+
+        /* Glassmorphic Contact Box */
+        .contact-box { margin-top: 40px; background: rgba(255, 255, 255, 0.35); padding: 35px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.18); backdrop-filter: blur(12px); transition: 0.3s; }
+        .contact-box:hover { transform: scale(1.02); }
+        input, textarea { width: 100%; padding: 14px; margin: 12px 0; border-radius: 8px; border: none; outline: none; font-size: 1rem; background: rgba(255,255,255,0.7); box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+        button { background: #be2e7aa9; color: white; padding: 14px 25px; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.3s; }
+        button:hover { background: #d30e81; transform: translateY(-2px); }
+
+        /* Quotes Box */
+        .quote-box { margin-top: 40px; padding: 25px; border-radius: 18px; text-align: center; font-size: 1.3rem; color: #333; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: slideIn 1.5s ease; }
+        #fetchQuoteBtn { display: block; margin: 20px auto 0 auto; background: #ff5fa2; color: white; padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        #fetchQuoteBtn:hover { background: #f9217f; transform: translateY(-2px); }
+
+        @keyframes slideIn { from { transform: translateX(-40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Footer */
+        footer { background: #be2e7a; color: white; padding: 18px; text-align: center; margin-top: 40px; letter-spacing: 1px; }
+
+        @media(max-width: 768px) { .hero-text h1 { font-size: 2.4rem; } }
+    </style>
+</head>
+
+<body>
+
+<!-- Hero Section -->
+<header>
+    <div class="hero-text">
+        <h1>Cancer Awareness & Support</h1>
+        <p>Spreading hope. Supporting fighters. Celebrating survivors. Together, we rise.</p>
+    </div>
+</header>
+
+<!-- About -->
+<div class="section">
+    <h2>About the Cause</h2>
+    <p>
+        Awareness leads to early detection. Early detection saves lives.  
+        Our mission is to support individuals, educate communities, and encourage regular health check-ups.  
+        Small actions create big changes — let’s stand united against cancer.
+    </p>
+</div>
+
+<!-- Contact Section -->
+<div class="section contact-box">
+    <h2>Contact Us</h2>
+    <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Your Message" required></textarea>
+        <button>Submit</button>
+    </form>
+</div>
+
+<!-- Quotes Section -->
+<div class="section">
+    <h2>Daily Motivation</h2>
+    <div class="quote-box" id="quoteBox">Click below to get an inspirational quote!</div>
+    <button id="fetchQuoteBtn">Fetch New Quote</button>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2025 Cancer Awareness & Support | Designed by Rohitha
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const quoteBox = document.getElementById("quoteBox");
+    const fetchBtn = document.getElementById("fetchQuoteBtn");
+    let quotesData = [];
+    let lastIndex = -1;
+
+    // 10 fallback quotes
+    const fallbackQuotes = [
+        { text: "Keep your face always toward the sunshine—and shadows will fall behind you.", author: "Walt Whitman" },
+        { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+        { text: "Every day may not be good, but there is something good in every day.", author: "Unknown" },
+        { text: "Strength does not come from physical capacity. It comes from an indomitable will.", author: "Mahatma Gandhi" },
+        { text: "Cancer is a word, not a sentence.", author: "John Diamond" },
+        { text: "The human spirit is stronger than anything that can happen to it.", author: "C.C. Scott" },
+        { text: "Hope is the only thing stronger than fear.", author: "Unknown" },
+        { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+        { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein" },
+        { text: "Your present circumstances don't determine where you can go.", author: "Nido Qubein" }
+    ];
+
+    // Use fallback initially
+    quotesData = [...fallbackQuotes];
+
+    // Fetch from API (optional)
+    fetch("https://type.fit/api/quotes")
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.length > 0) quotesData = data;
+            displayRandomQuote();
+        })
+        .catch(() => {
+            displayRandomQuote();
+        });
+
+    function displayRandomQuote() {
+        if (!quotesData.length) return;
+        let index;
+        do {
+            index = Math.floor(Math.random() * quotesData.length);
+        } while (index === lastIndex && quotesData.length > 1);
+        lastIndex = index;
+        const random = quotesData[index];
+        // Fade-in effect
+        quoteBox.style.opacity = 0;
+        setTimeout(() => {
+            quoteBox.innerHTML = `"${random.text}" <br><br> — <b>${random.author || "Unknown"}</b>`;
+            quoteBox.style.opacity = 1;
+        }, 200);
+    }
+
+    fetchBtn.addEventListener("click", displayRandomQuote);
+});
+</script>
+
+</body>
+</html>
